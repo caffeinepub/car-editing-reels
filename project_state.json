@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Website for showcasing and sharing car editing reels (video content focused on car edits).",
+  "architectural_notes": [
+    "Frontend-only website with video embed/playback support"
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Dramatic wide cinematic shot of a dark racetrack at night with motion-blurred sports cars and orange-amber light streaks, dark sky atmosphere (hero-banner.dim_1920x600.png)\n- Minimalist stylized side-profile silhouette of a sleek sports car with glowing amber outline on black background (reel-placeholder-thumb.dim_640x360.png)",
+  "existing_features": [
+    {
+      "id": "feature-create-a-homepage-that-showcases-featured-car-editing-reels-with-hero-banner-featured-reel-cards-displaying-thumbnail-title-uploader-name-view-count-and-a-call-to-action-to-explore-more-reels",
+      "title": "Create a homepage that showcases featured car editing reels with hero banner, featured reel cards displaying thumbnail, title, uploader name, view count, and a call-to-action to explore more reels.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-reel-upload-and-submission-form-where-users-can-submit-a-car-editing-reel-by-providing-a-title-description-video-url-e-g-youtube-vimeo-embed-link-thumbnail-url-and-tags-category-store-submissions-in-the-backend",
+      "title": "Implement a reel upload and submission form where users can submit a car editing reel by providing a title, description, video URL (e.g., YouTube/Vimeo embed link), thumbnail URL, and tags/category. Store submissions in the backend.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-browse-gallery-page-where-users-can-explore-all-submitted-car-editing-reels-with-filtering-by-category-tag-and-a-search-input-display-reels-in-a-responsive-grid-layout",
+      "title": "Build a browse/gallery page where users can explore all submitted car editing reels, with filtering by category/tag and a search input. Display reels in a responsive grid layout.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-individual-reel-detail-playback-page-that-embeds-and-plays-the-video-shows-the-full-title-description-uploader-tags-and-view-count-increment-the-view-count-each-time-the-reel-detail-page-is-visited",
+      "title": "Create an individual reel detail/playback page that embeds and plays the video, shows the full title, description, uploader, tags, and view count. Increment the view count each time the reel detail page is visited.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-apply-a-dark-cinematic-visual-theme-across-the-entire-site-deep-black-dark-grey-backgrounds-bold-white-and-amber-orange-accent-colors-sleek-sans-serif-typography-and-edge-lit-card-components-the-layout-should-feel-like-a-high-energy-automotive-media-platform-with-full-width-sections-and-dramatic-spacing",
+      "title": "Apply a dark, cinematic visual theme across the entire site: deep black/dark-grey backgrounds, bold white and amber/orange accent colors, sleek sans-serif typography, and edge-lit card components. The layout should feel like a high-energy automotive media platform with full-width sections and dramatic spacing.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-use-the-generated-hero-background-image-hero-banner-dim-1920x600-png-as-the-homepage-hero-section-background",
+      "title": "Use the generated hero background image (hero-banner.dim_1920x600.png) as the homepage hero section background.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Homepage showcasing featured car editing reels",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Video reel upload and submission functionality",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Browse/gallery page to explore car editing reels by category or tag",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Individual reel detail/playback page",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Car Editing Reels",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

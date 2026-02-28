@@ -1,0 +1,22 @@
+{
+  "backend/main.mo": "Motoko actor defining the Reel data model and backend canister with functions to submit reels, retrieve single or all reels, increment view counts, get featured reels by range, and filter reels by tag.",
+  "feature_evidence.json": "Feature evidence report mapping five product features (homepage, upload form, browse gallery, reel detail page, and visual theme) to their corresponding frontend source files and test IDs.",
+  "frontend-file-summaries.txt": "JSON document containing one-sentence summaries for each frontend source file, serving as a reference index for the project's frontend components, pages, hooks, and config files.",
+  "frontend/index.css": "Tailwind base CSS file defining OKLCH-based CSS custom properties for light and dark color themes including background, foreground, card, border, and chart tokens.",
+  "frontend/index.html": "Minimal HTML entry point for the React app, mounting the root div and loading the main TypeScript module.",
+  "frontend/src/App.tsx": "Main React app component that configures TanStack Router with a shared Layout (Header, Footer, Toaster) and defines routes for Home, Browse, Upload, and Reel Detail pages.",
+  "frontend/src/components/Footer.tsx": "Site footer component displaying the RevReel brand, navigation links, copyright year, and a caffeine.ai attribution link with UTM tracking.",
+  "frontend/src/components/Header.tsx": "Sticky navigation header with the RevReel logo, desktop nav links with active-state highlighting, a Submit CTA button, and a collapsible mobile hamburger menu.",
+  "frontend/src/components/ReelCard.tsx": "Reusable card component for displaying a reel's thumbnail with play overlay, title, uploader, tag badges, and view count, with amber glow hover effects.",
+  "frontend/src/hooks/useActor.ts": "Custom hook that creates and caches an ICP backend actor using React Query, returning either an authenticated or anonymous actor based on the current Internet Identity, and invalidating dependent queries when the actor changes.",
+  "frontend/src/hooks/useInternetIdentity.ts": "Provides an InternetIdentityProvider component and useInternetIdentity hook for managing ICP Internet Identity authentication state, including login, logout, and identity persistence via AuthClient.",
+  "frontend/src/hooks/useQueries.ts": "Defines React Query hooks for all backend interactions including fetching reels (all, featured, by ID, by tag), submitting new reels, and incrementing view counts.",
+  "frontend/src/index.css": "Global stylesheet importing Barlow fonts and Tailwind, defining a cinematic dark theme with CSS custom properties and utility classes for amber glow effects, gradients, and scrollbar styling.",
+  "frontend/src/main.tsx": "Application entry point that renders the React app wrapped with QueryClientProvider and InternetIdentityProvider.",
+  "frontend/src/pages/BrowsePage.tsx": "Browse page that displays all reels with client-side filtering by search query and tag, showing a grid of ReelCard components with loading skeletons.",
+  "frontend/src/pages/HomePage.tsx": "Home page featuring a hero banner section, a stats bar, and a featured reels grid fetched from the backend with navigation to individual reel detail pages.",
+  "frontend/src/pages/ReelDetailPage.tsx": "Detail page for a single reel that embeds the video via iframe, displays metadata (title, uploader, tags, view count), and increments the view count on load.",
+  "frontend/src/pages/UploadPage.tsx": "React page component providing a form for submitting new car editing reels with fields for title, description, video URL, thumbnail URL, creator name, and tags. Handles validation, submission via the useSubmitReel mutation hook, and displays a success state with navigation options.",
+  "frontend/tailwind.config.js": "Tailwind CSS configuration defining a dark cinematic theme with custom color tokens (amber-glow, cinema-black, etc.), display/body font families, glow box-shadow utilities, and animation keyframes for accordion and amber pulse effects.",
+  "project_state.json": "Project state manifest describing a car editing reels showcase website, listing implemented features (homepage, upload form, browse gallery, reel detail page, cinematic theme, hero image), known issues, and architectural notes."
+}

@@ -1,0 +1,31 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-28T15:34:27.236Z",
+  "summary": "The diff implements all six requirements comprehensively. The backend Motoko actor handles reel CRUD and view counting; the frontend includes homepage with hero banner, browse/gallery page, upload form, reel detail page with embedded video, and a consistent dark cinematic theme with amber accents. All acceptance criteria appear to be addressed by the implemented files.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.92,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/Footer.tsx",
+    "frontend/src/components/Header.tsx",
+    "frontend/src/components/ReelCard.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/pages/BrowsePage.tsx",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/ReelDetailPage.tsx",
+    "frontend/src/pages/UploadPage.tsx",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

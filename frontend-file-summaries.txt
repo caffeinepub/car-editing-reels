@@ -1,0 +1,13 @@
+{
+  "frontend/src/index.css": "Global styles establishing the dark cinematic theme with OKLCH color tokens, Barlow/Barlow Condensed fonts, amber glow utilities, and card hover effects.",
+  "frontend/tailwind.config.js": "Tailwind config extended with cinematic color palette tokens (amber-glow, cinema-black, cinema-dark, cinema-grey), display/body font families, and custom glow box-shadow utilities.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations: getAllReels, getFeaturedReels, getReel, filterByTag, submitReel, and incrementViewCount with proper cache invalidation.",
+  "frontend/src/components/ReelCard.tsx": "Reusable reel card component with thumbnail, play overlay, title, uploader, tags, and view count; features amber glow hover effects and edge-lit styling.",
+  "frontend/src/components/Header.tsx": "Sticky navigation header with RevReel branding, desktop nav links, mobile hamburger menu, and amber-accented Submit CTA button.",
+  "frontend/src/components/Footer.tsx": "Site footer with brand info, navigation links, copyright year, and caffeine.ai attribution with UTM tracking.",
+  "frontend/src/pages/HomePage.tsx": "Homepage with full-width hero banner (generated image background), stats bar, featured reels grid with loading skeletons, and a CTA banner section.",
+  "frontend/src/pages/BrowsePage.tsx": "Browse/gallery page with search input, tag filter buttons, client-side filtering, and a responsive 4-column reel grid with empty/loading states.",
+  "frontend/src/pages/UploadPage.tsx": "Reel submission form with fields for title, creator, description, video URL, thumbnail URL, and dynamic tag management; includes validation, loading state, and success confirmation.",
+  "frontend/src/pages/ReelDetailPage.tsx": "Reel detail page with embedded iframe video player, full metadata display (title, uploader, tags, view count), and automatic view count increment on mount.",
+  "frontend/src/App.tsx": "Main app component setting up TanStack Router with Layout (Header/Footer/Outlet), routes for Home, Browse, Upload, and Reel Detail pages."
+}
