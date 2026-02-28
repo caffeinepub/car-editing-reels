@@ -8,65 +8,149 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const ViewRange = IDL.Record({ 'end' : IDL.Nat, 'start' : IDL.Nat });
-export const Reel = IDL.Record({
-  'id' : IDL.Nat,
-  'title' : IDL.Text,
-  'thumbnailUrl' : IDL.Text,
-  'tags' : IDL.Vec(IDL.Text),
-  'description' : IDL.Text,
-  'viewCount' : IDL.Nat,
-  'uploader' : IDL.Text,
-  'videoUrl' : IDL.Text,
+export const _CaffeineStorageCreateCertificateResult = IDL.Record({
+  'method' : IDL.Text,
+  'blob_hash' : IDL.Text,
 });
-export const NewReel = IDL.Record({
-  'title' : IDL.Text,
-  'thumbnailUrl' : IDL.Text,
-  'tags' : IDL.Vec(IDL.Text),
-  'description' : IDL.Text,
-  'uploader' : IDL.Text,
-  'videoUrl' : IDL.Text,
+export const _CaffeineStorageRefillInformation = IDL.Record({
+  'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
 });
+export const _CaffeineStorageRefillResult = IDL.Record({
+  'success' : IDL.Opt(IDL.Bool),
+  'topped_up_amount' : IDL.Opt(IDL.Nat),
+});
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const ImageId = IDL.Text;
+export const ExternalBlob = IDL.Vec(IDL.Nat8);
+export const Timestamp = IDL.Int;
+export const StoredImage = IDL.Record({
+  'id' : ImageId,
+  'owner' : IDL.Principal,
+  'blob' : ExternalBlob,
+  'timestamp' : Timestamp,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
 
 export const idlService = IDL.Service({
-  'filterByTag' : IDL.Func([IDL.Text, ViewRange], [IDL.Vec(Reel)], ['query']),
-  'getAllReels' : IDL.Func([], [IDL.Vec(Reel)], ['query']),
-  'getFeaturedReels' : IDL.Func([ViewRange], [IDL.Vec(Reel)], ['query']),
-  'getReel' : IDL.Func([IDL.Nat], [Reel], ['query']),
-  'incrementViewCount' : IDL.Func([IDL.Nat], [IDL.Bool], []),
-  'submitReel' : IDL.Func([NewReel], [IDL.Nat], []),
+  '_caffeineStorageBlobIsLive' : IDL.Func(
+      [IDL.Vec(IDL.Nat8)],
+      [IDL.Bool],
+      ['query'],
+    ),
+  '_caffeineStorageBlobsToDelete' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      ['query'],
+    ),
+  '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+      [IDL.Vec(IDL.Vec(IDL.Nat8))],
+      [],
+      [],
+    ),
+  '_caffeineStorageCreateCertificate' : IDL.Func(
+      [IDL.Text],
+      [_CaffeineStorageCreateCertificateResult],
+      [],
+    ),
+  '_caffeineStorageRefillCashier' : IDL.Func(
+      [IDL.Opt(_CaffeineStorageRefillInformation)],
+      [_CaffeineStorageRefillResult],
+      [],
+    ),
+  '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'deleteImage' : IDL.Func([ImageId], [], []),
+  'getAllImages' : IDL.Func([], [IDL.Vec(StoredImage)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getImage' : IDL.Func([ImageId], [IDL.Opt(StoredImage)], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'uploadImage' : IDL.Func([ExternalBlob], [ImageId], []),
 });
 
 export const idlInitArgs = [];
 
 export const idlFactory = ({ IDL }) => {
-  const ViewRange = IDL.Record({ 'end' : IDL.Nat, 'start' : IDL.Nat });
-  const Reel = IDL.Record({
-    'id' : IDL.Nat,
-    'title' : IDL.Text,
-    'thumbnailUrl' : IDL.Text,
-    'tags' : IDL.Vec(IDL.Text),
-    'description' : IDL.Text,
-    'viewCount' : IDL.Nat,
-    'uploader' : IDL.Text,
-    'videoUrl' : IDL.Text,
+  const _CaffeineStorageCreateCertificateResult = IDL.Record({
+    'method' : IDL.Text,
+    'blob_hash' : IDL.Text,
   });
-  const NewReel = IDL.Record({
-    'title' : IDL.Text,
-    'thumbnailUrl' : IDL.Text,
-    'tags' : IDL.Vec(IDL.Text),
-    'description' : IDL.Text,
-    'uploader' : IDL.Text,
-    'videoUrl' : IDL.Text,
+  const _CaffeineStorageRefillInformation = IDL.Record({
+    'proposed_top_up_amount' : IDL.Opt(IDL.Nat),
   });
+  const _CaffeineStorageRefillResult = IDL.Record({
+    'success' : IDL.Opt(IDL.Bool),
+    'topped_up_amount' : IDL.Opt(IDL.Nat),
+  });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const ImageId = IDL.Text;
+  const ExternalBlob = IDL.Vec(IDL.Nat8);
+  const Timestamp = IDL.Int;
+  const StoredImage = IDL.Record({
+    'id' : ImageId,
+    'owner' : IDL.Principal,
+    'blob' : ExternalBlob,
+    'timestamp' : Timestamp,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
   
   return IDL.Service({
-    'filterByTag' : IDL.Func([IDL.Text, ViewRange], [IDL.Vec(Reel)], ['query']),
-    'getAllReels' : IDL.Func([], [IDL.Vec(Reel)], ['query']),
-    'getFeaturedReels' : IDL.Func([ViewRange], [IDL.Vec(Reel)], ['query']),
-    'getReel' : IDL.Func([IDL.Nat], [Reel], ['query']),
-    'incrementViewCount' : IDL.Func([IDL.Nat], [IDL.Bool], []),
-    'submitReel' : IDL.Func([NewReel], [IDL.Nat], []),
+    '_caffeineStorageBlobIsLive' : IDL.Func(
+        [IDL.Vec(IDL.Nat8)],
+        [IDL.Bool],
+        ['query'],
+      ),
+    '_caffeineStorageBlobsToDelete' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        ['query'],
+      ),
+    '_caffeineStorageConfirmBlobDeletion' : IDL.Func(
+        [IDL.Vec(IDL.Vec(IDL.Nat8))],
+        [],
+        [],
+      ),
+    '_caffeineStorageCreateCertificate' : IDL.Func(
+        [IDL.Text],
+        [_CaffeineStorageCreateCertificateResult],
+        [],
+      ),
+    '_caffeineStorageRefillCashier' : IDL.Func(
+        [IDL.Opt(_CaffeineStorageRefillInformation)],
+        [_CaffeineStorageRefillResult],
+        [],
+      ),
+    '_caffeineStorageUpdateGatewayPrincipals' : IDL.Func([], [], []),
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'deleteImage' : IDL.Func([ImageId], [], []),
+    'getAllImages' : IDL.Func([], [IDL.Vec(StoredImage)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getImage' : IDL.Func([ImageId], [IDL.Opt(StoredImage)], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'uploadImage' : IDL.Func([ExternalBlob], [ImageId], []),
   });
 };
 

@@ -2,38 +2,24 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-create-a-homepage-that-showcases-featured-car-editing-reels-with-hero-banner-featured-reel-cards-displaying-thumbnail-title-uploader-name-view-count-and-a-call-to-action-to-explore-more-reels",
-      "featureTitle": "Create a homepage that showcases featured car editing reels with hero banner, featured reel cards displaying thumbnail, title, uploader name, view count, and a call-to-action to explore more reels.",
+      "featureId": "feature-build-a-single-page-thumbnail-png-uploader-ui-that-allows-the-user-to-select-or-drag-and-drop-one-png-file-at-a-time-shows-a-live-preview-of-the-selected-image-before-upload-validates-that-the-file-is-png-only-with-a-clear-error-message-for-invalid-types-and-uploads-the-file-to-the-backend-on-confirmation",
+      "featureTitle": "Build a single-page Thumbnail PNG Uploader UI that allows the user to select or drag-and-drop one PNG file at a time, shows a live preview of the selected image before upload, validates that the file is PNG-only with a clear error message for invalid types, and uploads the file to the backend on confirmation.",
       "files": [
+        "frontend/index.html",
         "frontend/src/App.tsx",
-        "frontend/src/components/ReelCard.tsx",
-        "frontend/src/pages/HomePage.tsx"
+        "frontend/src/components/Footer.tsx",
+        "frontend/src/components/Header.tsx",
+        "frontend/src/hooks/useQueries.ts",
+        "frontend/src/pages/ThumbnailUploadPage.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-1"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-implement-a-reel-upload-and-submission-form-where-users-can-submit-a-car-editing-reel-by-providing-a-title-description-video-url-e-g-youtube-vimeo-embed-link-thumbnail-url-and-tags-category-store-submissions-in-the-backend",
-      "featureTitle": "Implement a reel upload and submission form where users can submit a car editing reel by providing a title, description, video URL (e.g., YouTube/Vimeo embed link), thumbnail URL, and tags/category. Store submissions in the backend.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/pages/UploadPage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
         "REQ-2"
@@ -41,48 +27,9 @@
       "confidence": "high"
     },
     {
-      "featureId": "feature-build-a-browse-gallery-page-where-users-can-explore-all-submitted-car-editing-reels-with-filtering-by-category-tag-and-a-search-input-display-reels-in-a-responsive-grid-layout",
-      "featureTitle": "Build a browse/gallery page where users can explore all submitted car editing reels, with filtering by category/tag and a search input. Display reels in a responsive grid layout.",
+      "featureId": "feature-apply-a-clean-minimal-visual-theme-to-the-uploader-app-light-neutral-background-generous-whitespace-subtle-rounded-upload-zone-with-dashed-border-smooth-drag-over-highlight-state-and-readable-sans-serif-typography-enforce-the-theme-consistently-across-all-ui-states-idle-drag-over-preview-uploading-success-error",
+      "featureTitle": "Apply a clean, minimal visual theme to the uploader app: light neutral background, generous whitespace, subtle rounded upload zone with dashed border, smooth drag-over highlight state, and readable sans-serif typography. Enforce the theme consistently across all UI states (idle, drag-over, preview, uploading, success, error).",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/pages/BrowsePage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-3"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-create-an-individual-reel-detail-playback-page-that-embeds-and-plays-the-video-shows-the-full-title-description-uploader-tags-and-view-count-increment-the-view-count-each-time-the-reel-detail-page-is-visited",
-      "featureTitle": "Create an individual reel detail/playback page that embeds and plays the video, shows the full title, description, uploader, tags, and view count. Increment the view count each time the reel detail page is visited.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/pages/ReelDetailPage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-4"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-apply-a-dark-cinematic-visual-theme-across-the-entire-site-deep-black-dark-grey-backgrounds-bold-white-and-amber-orange-accent-colors-sleek-sans-serif-typography-and-edge-lit-card-components-the-layout-should-feel-like-a-high-energy-automotive-media-platform-with-full-width-sections-and-dramatic-spacing",
-      "featureTitle": "Apply a dark, cinematic visual theme across the entire site: deep black/dark-grey backgrounds, bold white and amber/orange accent colors, sleek sans-serif typography, and edge-lit card components. The layout should feel like a high-energy automotive media platform with full-width sections and dramatic spacing.",
-      "files": [
-        "frontend/src/components/ReelCard.tsx",
         "frontend/src/index.css",
         "frontend/tailwind.config.js"
       ],
@@ -91,28 +38,12 @@
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0",
+        "blob-storage@4.0.0"
       ],
       "testIds": [
-        "REQ-5"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-use-the-generated-hero-background-image-hero-banner-dim-1920x600-png-as-the-homepage-hero-section-background",
-      "featureTitle": "Use the generated hero background image (hero-banner.dim_1920x600.png) as the homepage hero section background.",
-      "files": [
-        "frontend/src/pages/HomePage.tsx"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-6"
+        "REQ-3"
       ],
       "confidence": "high"
     }

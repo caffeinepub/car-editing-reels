@@ -1,121 +1,101 @@
-import Text "mo:core/Text";
 import Map "mo:core/Map";
-import Array "mo:core/Array";
-import Runtime "mo:core/Runtime";
+import Text "mo:core/Text";
 import Nat "mo:core/Nat";
-import List "mo:core/List";
-import Iter "mo:core/Iter";
-import Char "mo:core/Char";
+import Runtime "mo:core/Runtime";
+import AccessControl "authorization/access-control";
+import MixinAuthorization "authorization/MixinAuthorization";
+import Blob "mo:core/Blob";
+import Storage "blob-storage/Storage";
+import MixinStorage "blob-storage/Mixin";
+import Time "mo:core/Time";
+import Migration "migration";
+import Principal "mo:core/Principal";
 
+(with migration = Migration.run)
 actor {
-  type Reel = {
-    id : Nat;
-    title : Text;
-    description : Text;
-    videoUrl : Text;
-    thumbnailUrl : Text;
-    tags : [Text];
-    uploader : Text;
-    viewCount : Nat;
+  public type Timestamp = Int;
+
+  public type ImageId = Text;
+
+  public type StoredImage = {
+    id : ImageId;
+    blob : Storage.ExternalBlob;
+    timestamp : Timestamp;
+    owner : Principal;
   };
 
-  type NewReel = {
-    title : Text;
-    description : Text;
-    videoUrl : Text;
-    thumbnailUrl : Text;
-    tags : [Text];
-    uploader : Text;
+  let images = Map.empty<ImageId, StoredImage>();
+  var nextId = 0;
+
+  let accessControlState = AccessControl.initState();
+  include MixinAuthorization(accessControlState);
+  include MixinStorage();
+
+  public type UserProfile = {
+    name : Text;
   };
 
-  let reels = Map.empty<Nat, Reel>();
-  var nextReelId = 0;
+  let userProfiles = Map.empty<Principal, UserProfile>();
 
-  type ViewRange = {
-    start : Nat;
-    end : Nat;
-  };
-
-  func rangeIter(list : List.List<Reel>, range : ViewRange) : Iter.Iter<Reel> {
-    if (range.start >= list.size() or range.end <= range.start) {
-      return List.empty<Reel>().values();
+  public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view profiles");
     };
+    userProfiles.get(caller);
+  };
 
-    let adjustedEnd = if (range.end > list.size()) {
-      list.size();
-    } else {
-      range.end;
+  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
+    if (caller != user and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Can only view your own profile");
     };
-
-    let takeAmount = adjustedEnd - range.start;
-    list.values().drop(range.start).take(takeAmount);
+    userProfiles.get(user);
   };
 
-  public shared ({ caller }) func submitReel(newReel : NewReel) : async Nat {
-    let reelId = nextReelId;
-    nextReelId += 1;
-
-    let reel : Reel = {
-      id = reelId;
-      title = newReel.title;
-      description = newReel.description;
-      videoUrl = newReel.videoUrl;
-      thumbnailUrl = newReel.thumbnailUrl;
-      tags = newReel.tags;
-      uploader = newReel.uploader;
-      viewCount = 0;
+  public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can save profiles");
     };
-
-    reels.add(reelId, reel);
-    reelId;
+    userProfiles.add(caller, profile);
   };
 
-  public query ({ caller }) func getReel(id : Nat) : async Reel {
-    switch (reels.get(id)) {
-      case (null) { Runtime.trap("Reel not found") };
-      case (?reel) { reel };
+  public shared ({ caller }) func uploadImage(blob : Storage.ExternalBlob) : async ImageId {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can upload images");
     };
-  };
-
-  public shared ({ caller }) func incrementViewCount(id : Nat) : async Bool {
-    var reel = switch (reels.get(id)) {
-      case (null) { Runtime.trap("Reel not found") };
-      case (?reel) { reel };
+    let id = nextId.toText();
+    nextId += 1;
+    let storedImage = {
+      id;
+      blob;
+      timestamp = Time.now();
+      owner = caller;
     };
-    let newViewCount = reel.viewCount + 1;
-    reel := { reel with viewCount = newViewCount };
-    reels.add(id, reel);
-    true;
+    images.add(id, storedImage);
+    id;
   };
 
-  public query ({ caller }) func getFeaturedReels(range : ViewRange) : async [Reel] {
-    rangeIter(reels.values().toList(), range).toArray();
+  public query ({ caller = _ }) func getImage(id : ImageId) : async ?StoredImage {
+    images.get(id);
   };
 
-  public query ({ caller }) func getAllReels() : async [Reel] {
-    reels.values().toArray();
-  };
-
-  func joinTags(tags : [Text], separator : Text) : Text {
-    switch (tags.size()) {
-      case (0) { "" };
-      case (1) { tags[0] };
-      case (_) {
-        tags.values().foldLeft(tags[0], func(acc, tag) { acc # separator # tag });
+  public shared ({ caller }) func deleteImage(id : ImageId) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can delete images");
+    };
+    switch (images.get(id)) {
+      case null {
+        Runtime.trap("Image not found");
+      };
+      case (?image) {
+        if (image.owner != caller and not AccessControl.isAdmin(accessControlState, caller)) {
+          Runtime.trap("Unauthorized: Only the owner or an admin can delete this image");
+        };
+        images.remove(id);
       };
     };
   };
 
-  public query ({ caller }) func filterByTag(search : Text, range : ViewRange) : async [Reel] {
-    let filtered = reels.values().toList<Reel>().filter(
-      func(reel) {
-        if (reel.tags.size() == 0) {
-          return false;
-        };
-        let joinedTags = joinTags(reel.tags, " ");
-        joinedTags.contains(#text(search));
-      }
-    );
-    rangeIter(filtered, range).toArray();
+  public query ({ caller = _ }) func getAllImages() : async [StoredImage] {
+    images.values().toArray();
   };
 };

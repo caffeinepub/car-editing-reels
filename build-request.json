@@ -1,136 +1,92 @@
 {
   "kind": "build_request",
-  "title": "Car Editing Reels Website",
-  "projectName": "RevReel",
+  "title": "Thumbnail PNG Uploader App",
+  "projectName": "Thumbnail Uploader",
   "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Create a homepage that showcases featured car editing reels with hero banner, featured reel cards displaying thumbnail, title, uploader name, view count, and a call-to-action to explore more reels.",
-      "target": "both",
+      "text": "Build a backend actor that accepts a single PNG file upload (as binary blob), stores it with a unique ID and timestamp, and exposes query/update functions to upload, retrieve, and delete a stored thumbnail.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-17",
+          "msg-19"
         ],
         "quotes": [
-          "create a website for car editing reels"
+          "change into thumnail png uploader",
+          "r one at a time"
         ]
       },
       "acceptanceCriteria": [
-        "Homepage renders a hero section with site branding and tagline",
-        "Featured reels section shows at least a grid of reel cards",
-        "Each reel card displays thumbnail image, title, uploader, and view count",
-        "CTA button navigates to the browse/gallery page"
+        "Actor exposes an upload function accepting a Blob and filename, returning a unique thumbnail ID",
+        "Actor exposes a query to retrieve the stored thumbnail blob and metadata by ID",
+        "Actor exposes a delete function to remove a stored thumbnail by ID",
+        "Only one thumbnail is active at a time (uploading a new one replaces the previous)"
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Implement a reel upload and submission form where users can submit a car editing reel by providing a title, description, video URL (e.g., YouTube/Vimeo embed link), thumbnail URL, and tags/category. Store submissions in the backend.",
-      "target": "both",
+      "text": "Build a single-page Thumbnail PNG Uploader UI that allows the user to select or drag-and-drop one PNG file at a time, shows a live preview of the selected image before upload, validates that the file is PNG-only with a clear error message for invalid types, and uploads the file to the backend on confirmation.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-17",
+          "msg-19",
+          "msg-21"
         ],
         "quotes": [
-          "create a website for car editing reels"
+          "change into thumnail png uploader",
+          "r one at a time",
+          "Single PNG upload with file picker and drag-and-drop support",
+          "Live preview of the selected thumbnail before confirming",
+          "PNG-only validation with clear error messages"
         ]
       },
       "acceptanceCriteria": [
-        "Upload/submit page renders a form with fields: title, description, video URL, thumbnail URL, and tags",
-        "Form validates required fields before submission",
-        "Submitted reels are persisted in the Motoko backend",
-        "User receives a success confirmation after submission"
+        "A file picker button and a drag-and-drop zone are both available for selecting a file",
+        "Only PNG files are accepted; selecting any other file type shows a clear error message",
+        "After selecting a valid PNG, a live preview of the image is displayed before upload",
+        "An upload/confirm button triggers the upload to the backend",
+        "A success state is shown after a successful upload, displaying the uploaded thumbnail",
+        "A delete/replace button allows the user to remove the current thumbnail and upload a new one",
+        "Only one thumbnail can be active at a time"
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Build a browse/gallery page where users can explore all submitted car editing reels, with filtering by category/tag and a search input. Display reels in a responsive grid layout.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "create a website for car editing reels"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Browse page displays all reels in a responsive grid",
-        "Tag/category filter buttons narrow the displayed reels",
-        "Search input filters reels by title or description",
-        "Clicking a reel card navigates to the reel detail page"
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "text": "Create an individual reel detail/playback page that embeds and plays the video, shows the full title, description, uploader, tags, and view count. Increment the view count each time the reel detail page is visited.",
-      "target": "both",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "create a website for car editing reels"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Reel detail page renders an embedded video player using the stored video URL",
-        "Full title, description, uploader name, tags, and view count are displayed",
-        "View count increments on each page visit via a backend call",
-        "Page includes a back navigation link to the browse gallery"
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Apply a dark, cinematic visual theme across the entire site: deep black/dark-grey backgrounds, bold white and amber/orange accent colors, sleek sans-serif typography, and edge-lit card components. The layout should feel like a high-energy automotive media platform with full-width sections and dramatic spacing.",
+      "text": "Apply a clean, minimal visual theme to the uploader app: light neutral background, generous whitespace, subtle rounded upload zone with dashed border, smooth drag-over highlight state, and readable sans-serif typography. Enforce the theme consistently across all UI states (idle, drag-over, preview, uploading, success, error).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-2"
+          "msg-21"
         ],
         "quotes": [
-          "create a website for car editing reels"
+          "Clean, minimal UI focused on the upload experience"
         ]
       },
       "acceptanceCriteria": [
-        "Global color palette uses deep black/dark-grey backgrounds with amber/orange accents",
-        "Typography uses bold, modern sans-serif fonts",
-        "Cards have a subtle glowing border or edge-lit effect",
-        "Theme is applied consistently across all pages and components"
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Use the generated hero background image (hero-banner.dim_1920x600.png) as the homepage hero section background.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Homepage hero section renders the generated image as a full-width background",
-        "Image is loaded from frontend/public/assets/generated/hero-banner.dim_1920x600.png"
+        "Upload zone has a dashed border and visually highlights on drag-over",
+        "All states (idle, drag-over, preview, uploading, success, error) have distinct, consistent visual treatments",
+        "Typography is clean and readable with adequate contrast",
+        "Layout is centered and uncluttered on both desktop and mobile"
       ]
     }
   ],
   "constraints": [
-    "All backend logic must reside in the single Motoko actor in backend/main.mo",
-    "Video playback must use embed URLs (YouTube/Vimeo); no direct video file uploads or streaming infrastructure",
-    "Do not modify any files under frontend/src/hooks/ or frontend/src/components/ui"
+    "Only PNG files may be uploaded; all other formats must be rejected client-side before any backend call",
+    "Only one thumbnail can be stored/active at a time",
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui"
   ],
   "nonGoals": [
-    "User authentication or login system",
-    "Real-time features such as live comments or notifications",
-    "Direct video file upload or hosting",
-    "Monetization or payment features",
-    "Mobile app or native platform"
+    "Multi-file or batch upload support",
+    "Support for image formats other than PNG",
+    "Image editing, cropping, or resizing",
+    "User authentication or access control for uploads",
+    "Cloud storage or external CDN integration"
   ],
   "imageRequirements": {
-    "required": [
-      "Dramatic wide cinematic shot of a dark racetrack at night with motion-blurred sports cars and orange-amber light streaks, dark sky atmosphere (hero-banner.dim_1920x600.png)",
-      "Minimalist stylized side-profile silhouette of a sleek sports car with glowing amber outline on black background (reel-placeholder-thumb.dim_640x360.png)"
-    ],
+    "required": [],
     "edits": []
   }
 }

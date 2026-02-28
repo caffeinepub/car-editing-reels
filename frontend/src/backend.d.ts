@@ -7,33 +7,38 @@ export interface None {
     __kind__: "None";
 }
 export type Option<T> = Some<T> | None;
-export interface Reel {
-    id: bigint;
-    title: string;
-    thumbnailUrl: string;
-    tags: Array<string>;
-    description: string;
-    viewCount: bigint;
-    uploader: string;
-    videoUrl: string;
+export class ExternalBlob {
+    getBytes(): Promise<Uint8Array<ArrayBuffer>>;
+    getDirectURL(): string;
+    static fromURL(url: string): ExternalBlob;
+    static fromBytes(blob: Uint8Array<ArrayBuffer>): ExternalBlob;
+    withUploadProgress(onProgress: (percentage: number) => void): ExternalBlob;
 }
-export interface ViewRange {
-    end: bigint;
-    start: bigint;
+export interface StoredImage {
+    id: ImageId;
+    owner: Principal;
+    blob: ExternalBlob;
+    timestamp: Timestamp;
 }
-export interface NewReel {
-    title: string;
-    thumbnailUrl: string;
-    tags: Array<string>;
-    description: string;
-    uploader: string;
-    videoUrl: string;
+export type ImageId = string;
+export type Timestamp = bigint;
+export interface UserProfile {
+    name: string;
+}
+export enum UserRole {
+    admin = "admin",
+    user = "user",
+    guest = "guest"
 }
 export interface backendInterface {
-    filterByTag(search: string, range: ViewRange): Promise<Array<Reel>>;
-    getAllReels(): Promise<Array<Reel>>;
-    getFeaturedReels(range: ViewRange): Promise<Array<Reel>>;
-    getReel(id: bigint): Promise<Reel>;
-    incrementViewCount(id: bigint): Promise<boolean>;
-    submitReel(newReel: NewReel): Promise<bigint>;
+    assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
+    deleteImage(id: ImageId): Promise<void>;
+    getAllImages(): Promise<Array<StoredImage>>;
+    getCallerUserProfile(): Promise<UserProfile | null>;
+    getCallerUserRole(): Promise<UserRole>;
+    getImage(id: ImageId): Promise<StoredImage | null>;
+    getUserProfile(user: Principal): Promise<UserProfile | null>;
+    isCallerAdmin(): Promise<boolean>;
+    saveCallerUserProfile(profile: UserProfile): Promise<void>;
+    uploadImage(blob: ExternalBlob): Promise<ImageId>;
 }

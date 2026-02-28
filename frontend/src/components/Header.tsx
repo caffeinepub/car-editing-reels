@@ -1,96 +1,73 @@
-import { Link, useLocation } from '@tanstack/react-router';
-import { Film, Upload, Grid3X3, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { Link } from '@tanstack/react-router';
+import { ImageIcon, LogIn, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function Header() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
+  const queryClient = useQueryClient();
+  const { login, clear, loginStatus, identity } = useInternetIdentity();
+  const isAuthenticated = !!identity;
+  const isLoggingIn = loginStatus === 'logging-in';
 
-  const navLinks = [
-    { to: '/', label: 'Home' },
-    { to: '/browse', label: 'Browse' },
-    { to: '/upload', label: 'Submit Reel' },
-  ];
-
-  const isActive = (path: string) => location.pathname === path;
+  const handleAuth = async () => {
+    if (isAuthenticated) {
+      await clear();
+      queryClient.clear();
+    } else {
+      try {
+        await login();
+      } catch (error: any) {
+        if (error.message === 'User is already authenticated') {
+          await clear();
+          setTimeout(() => login(), 300);
+        }
+      }
+    }
+  };
 
   return (
-    <header className="sticky top-0 z-50 bg-cinema-black/95 backdrop-blur-sm border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 bg-surface-1 border-b border-border shadow-xs">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded bg-amber-glow flex items-center justify-center shadow-glow-sm group-hover:shadow-glow-md transition-shadow duration-300">
-              <Film className="w-4 h-4 text-cinema-black" />
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 rounded-lg bg-brand-blue flex items-center justify-center shadow-sm group-hover:shadow-blue-glow transition-shadow duration-200">
+              <ImageIcon className="w-4 h-4 text-white" />
             </div>
-            <span className="font-display text-xl font-black tracking-widest text-foreground">
-              REV<span className="text-amber-glow">REEL</span>
+            <span className="font-display text-lg font-bold text-foreground tracking-tight">
+              Thumbnail<span className="text-brand-blue">Uploader</span>
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className={`px-4 py-2 text-sm font-body font-semibold tracking-wide transition-colors duration-200 rounded ${
-                  isActive(link.to)
-                    ? 'text-amber-glow bg-amber-glow/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-cinema-grey'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link to="/upload">
-              <Button
-                size="sm"
-                className="bg-amber-glow text-cinema-black hover:bg-amber-bright font-display font-bold tracking-wider shadow-glow-sm hover:shadow-glow-md transition-all duration-200"
-              >
-                <Upload className="w-3.5 h-3.5 mr-1.5" />
-                SUBMIT
-              </Button>
-            </Link>
-          </div>
-
-          {/* Mobile menu toggle */}
-          <button
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+          {/* Auth Button */}
+          <Button
+            size="sm"
+            variant={isAuthenticated ? 'outline' : 'default'}
+            onClick={handleAuth}
+            disabled={isLoggingIn}
+            className={
+              isAuthenticated
+                ? 'border-border text-ink-2 hover:text-foreground font-body font-medium'
+                : 'bg-brand-blue hover:bg-brand-blue-light text-white font-body font-medium'
+            }
           >
-            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+            {isLoggingIn ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : isAuthenticated ? (
+              <>
+                <LogOut className="w-3.5 h-3.5 mr-1.5" />
+                Logout
+              </>
+            ) : (
+              <>
+                <LogIn className="w-3.5 h-3.5 mr-1.5" />
+                Login
+              </>
+            )}
+          </Button>
         </div>
       </div>
-
-      {/* Mobile Nav */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-border bg-cinema-dark">
-          <nav className="px-4 py-3 flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setMobileOpen(false)}
-                className={`px-3 py-2.5 text-sm font-body font-semibold rounded transition-colors duration-200 ${
-                  isActive(link.to)
-                    ? 'text-amber-glow bg-amber-glow/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-cinema-grey'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      )}
     </header>
   );
 }

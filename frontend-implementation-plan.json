@@ -1,140 +1,72 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "RevReel - Car Editing Reels Frontend Implementation",
+  "title": "Thumbnail PNG Uploader Frontend Implementation",
   "requirements": [
     {
-      "id": "REQ-1",
-      "summary": "Create homepage with hero banner and featured reel cards showcasing car editing content",
-      "acceptanceCriteria": [
-        "Homepage renders a hero section with site branding and tagline",
-        "Featured reels section shows at least a grid of reel cards",
-        "Each reel card displays thumbnail image, title, uploader, and view count",
-        "CTA button navigates to the browse/gallery page"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "create",
-          "description": "Create homepage component with hero section (including site title and tagline), featured reels grid section fetching data via getFeaturedReels, and CTA button linking to browse page. Each reel card displays thumbnail, title, uploader, and view count. Wire the generated hero-banner.dim_1920x600.png image from frontend/public/assets/generated/hero-banner.dim_1920x600.png as the hero background."
-        },
-        {
-          "path": "frontend/src/components/ReelCard.tsx",
-          "operation": "create",
-          "description": "Create reusable reel card component displaying thumbnail image, title, uploader name, and view count with hover effects and click navigation to reel detail page."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Set up React Router routes for HomePage at root path ('/') and wire navigation structure for the application."
-        }
-      ]
-    },
-    {
       "id": "REQ-2",
-      "summary": "Implement reel upload form allowing users to submit car editing reels with metadata",
+      "summary": "Build a single-page Thumbnail PNG Uploader UI with file picker, drag-and-drop, live preview, PNG validation, and upload confirmation",
       "acceptanceCriteria": [
-        "Upload/submit page renders a form with fields: title, description, video URL, thumbnail URL, and tags",
-        "Form validates required fields before submission",
-        "Submitted reels are persisted in the Motoko backend",
-        "User receives a success confirmation after submission"
+        "A file picker button and a drag-and-drop zone are both available for selecting a file",
+        "Only PNG files are accepted; selecting any other file type shows a clear error message",
+        "After selecting a valid PNG, a live preview of the image is displayed before upload",
+        "An upload/confirm button triggers the upload to the backend",
+        "A success state is shown after a successful upload, displaying the uploaded thumbnail",
+        "A delete/replace button allows the user to remove the current thumbnail and upload a new one",
+        "Only one thumbnail can be active at a time"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/pages/UploadPage.tsx",
+          "path": "frontend/src/pages/ThumbnailUploadPage.tsx",
           "operation": "create",
-          "description": "Create upload page with a form containing input fields for title, description, videoUrl, thumbnailUrl, uploader, and tags (comma-separated or multi-select). Implement form validation ensuring required fields are filled. On submit, call the backend submitReel method with NewReel data. Display success confirmation message after successful submission and provide option to navigate to browse page or submit another reel."
+          "description": "Create the main thumbnail uploader page with file picker button, drag-and-drop zone, PNG-only validation, live preview area, upload confirmation button, success state display, and delete/replace functionality. Use the blob-storage component (ExternalBlob.fromBytes with withUploadProgress) to handle file upload to backend. Call actor.uploadImage(blob) to upload and actor.getImage(id) to retrieve. Show clear error messages for non-PNG files. Verify the blob-storage component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Add React Query hooks for thumbnail operations: useUploadImage (mutation calling actor.uploadImage with ExternalBlob), useGetImage (query calling actor.getImage by id), useDeleteImage (mutation calling actor.deleteImage by id), and useGetAllImages (query calling actor.getAllImages). Each hook should use useActor to obtain the backend actor. Verify the blob-storage component's usage instructions before implementing."
         },
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Add route for UploadPage at '/upload' path and include navigation link in the app header or navigation bar."
+          "description": "Replace existing routes with a single route for ThumbnailUploadPage at the root path '/'. Remove all other page routes (Browse, Submit, Footage Detail, Admin Dashboard). Keep the shared Layout with Header and Footer but simplify navigation to only show the uploader. Update the HTML title to 'Thumbnail Uploader'."
+        },
+        {
+          "path": "frontend/src/components/Header.tsx",
+          "operation": "modify",
+          "description": "Simplify the header to display 'Thumbnail Uploader' branding and the Internet Identity login/logout button. Remove all navigation links except for the logo/home link. Keep the authentication integration intact using useInternetIdentity hook as provided by the authorization component."
+        },
+        {
+          "path": "frontend/src/components/Footer.tsx",
+          "operation": "modify",
+          "description": "Simplify the footer to show basic branding 'Thumbnail Uploader', copyright notice, and the caffeine.ai attribution link. Remove mission statement and extra navigation links to maintain a minimal layout."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Update the HTML title tag from 'Car Editing Reels' to 'Thumbnail Uploader' to match the new application purpose."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Build browse/gallery page with filtering, search, and responsive grid display of all reels",
+      "summary": "Apply a clean, minimal visual theme with light neutral background, generous whitespace, subtle rounded upload zone with dashed border, smooth drag-over highlight, and readable sans-serif typography across all UI states",
       "acceptanceCriteria": [
-        "Browse page displays all reels in a responsive grid",
-        "Tag/category filter buttons narrow the displayed reels",
-        "Search input filters reels by title or description",
-        "Clicking a reel card navigates to the reel detail page"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/BrowsePage.tsx",
-          "operation": "create",
-          "description": "Create browse/gallery page that fetches all reels via getAllReels backend method. Implement a responsive grid layout displaying ReelCard components. Add tag filter buttons that call filterByTag backend method when clicked. Include a search input field that filters reels client-side by title or description. Wire each reel card click to navigate to the reel detail page with the reel ID."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Add route for BrowsePage at '/browse' path and ensure navigation from homepage CTA and app navigation bar links to this page."
-        }
-      ]
-    },
-    {
-      "id": "REQ-4",
-      "summary": "Create reel detail page with embedded video player, metadata display, and view count increment",
-      "acceptanceCriteria": [
-        "Reel detail page renders an embedded video player using the stored video URL",
-        "Full title, description, uploader name, tags, and view count are displayed",
-        "View count increments on each page visit via a backend call",
-        "Page includes a back navigation link to the browse gallery"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/ReelDetailPage.tsx",
-          "operation": "create",
-          "description": "Create reel detail page that extracts reel ID from URL params and fetches reel data via getReel backend method. Display an embedded iframe video player using the videoUrl (supporting YouTube/Vimeo embeds). Show full title, description, uploader name, tags array, and view count. On component mount, call incrementViewCount backend method with the reel ID to increment view count. Include a back button or link navigating to '/browse'."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Add route for ReelDetailPage at '/reel/:id' path to enable dynamic reel detail navigation."
-        }
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "summary": "Apply dark cinematic visual theme with black/dark-grey backgrounds, amber/orange accents, bold typography, and edge-lit card effects",
-      "acceptanceCriteria": [
-        "Global color palette uses deep black/dark-grey backgrounds with amber/orange accents",
-        "Typography uses bold, modern sans-serif fonts",
-        "Cards have a subtle glowing border or edge-lit effect",
-        "Theme is applied consistently across all pages and components"
+        "Upload zone has a dashed border and visually highlights on drag-over",
+        "All states (idle, drag-over, preview, uploading, success, error) have distinct, consistent visual treatments",
+        "Typography is clean and readable with adequate contrast",
+        "Layout is centered and uncluttered on both desktop and mobile"
       ],
       "file_operations": [
         {
           "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Update global styles to establish dark cinematic theme with deep black/dark-grey backgrounds (#0a0a0a, #1a1a1a), amber/orange accent colors (#ff8c00, #ffa500), bold white text (#ffffff), and modern sans-serif font stack (e.g., 'Inter', 'Roboto', sans-serif). Define base text and background colors for body and root elements."
+          "description": "Replace the current dark cinematic theme with a clean, minimal light theme. Define CSS custom properties for light neutral backgrounds (e.g., soft grays), subtle accent colors for highlights, and readable text colors with high contrast. Add utility classes for the dashed border upload zone, drag-over highlight state (e.g., border color change or subtle background shift), and generous spacing. Remove dark mode OKLCH tokens and replace with light theme equivalents. Keep Tailwind imports intact."
         },
         {
           "path": "frontend/tailwind.config.js",
           "operation": "modify",
-          "description": "Extend Tailwind theme with custom color palette including 'cinematic-black', 'cinematic-grey', 'amber-accent', and 'orange-accent'. Add custom box-shadow utilities for edge-lit glow effects on cards (e.g., glowing amber border). Configure font family for bold, modern sans-serif typography."
-        },
-        {
-          "path": "frontend/src/components/ReelCard.tsx",
-          "operation": "modify",
-          "description": "Apply edge-lit card styling using Tailwind custom shadow utilities (glowing amber border effect) and ensure dark background with white text and amber accents on hover."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Use generated hero background image in homepage hero section",
-      "acceptanceCriteria": [
-        "Homepage hero section renders the generated image as a full-width background",
-        "Image is loaded from frontend/public/assets/generated/hero-banner.dim_1920x600.png"
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Set the hero section background image to the generated asset at frontend/public/assets/generated/hero-banner.dim_1920x600.png using inline styles or Tailwind background utilities. Ensure the image covers the full width of the hero section with appropriate background positioning and sizing (e.g., background-size: cover, background-position: center)."
+          "description": "Update Tailwind configuration to support the minimal light theme. Replace amber/dark cinematic color tokens with light neutral colors (whites, light grays, soft blues or greens for accents). Configure readable sans-serif fonts (keep or replace Barlow with a system font stack if needed). Add custom utilities for dashed borders, rounded corners, and smooth transitions. Remove glow effects and dark theme-specific shadows, replacing them with subtle light shadows for depth."
         }
       ]
     }

@@ -1,10 +1,7 @@
 import { RouterProvider, createRouter, createRoute, createRootRoute, Outlet } from '@tanstack/react-router';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { HomePage } from './pages/HomePage';
-import { BrowsePage } from './pages/BrowsePage';
-import { UploadPage } from './pages/UploadPage';
-import { ReelDetailPage } from './pages/ReelDetailPage';
+import { ThumbnailUploadPage } from './pages/ThumbnailUploadPage';
 import { Toaster } from '@/components/ui/sonner';
 
 // Layout component
@@ -16,7 +13,7 @@ function Layout() {
         <Outlet />
       </div>
       <Footer />
-      <Toaster theme="dark" />
+      <Toaster />
     </div>
   );
 }
@@ -29,28 +26,10 @@ const rootRoute = createRootRoute({
 const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: HomePage,
+  component: ThumbnailUploadPage,
 });
 
-const browseRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/browse',
-  component: BrowsePage,
-});
-
-const uploadRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/upload',
-  component: UploadPage,
-});
-
-const reelDetailRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/reel/$id',
-  component: ReelDetailPage,
-});
-
-const routeTree = rootRoute.addChildren([homeRoute, browseRoute, uploadRoute, reelDetailRoute]);
+const routeTree = rootRoute.addChildren([homeRoute]);
 
 const router = createRouter({ routeTree });
 

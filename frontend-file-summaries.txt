@@ -1,13 +1,19 @@
 {
-  "frontend/src/index.css": "Global styles establishing the dark cinematic theme with OKLCH color tokens, Barlow/Barlow Condensed fonts, amber glow utilities, and card hover effects.",
-  "frontend/tailwind.config.js": "Tailwind config extended with cinematic color palette tokens (amber-glow, cinema-black, cinema-dark, cinema-grey), display/body font families, and custom glow box-shadow utilities.",
-  "frontend/src/hooks/useQueries.ts": "React Query hooks for all backend operations: getAllReels, getFeaturedReels, getReel, filterByTag, submitReel, and incrementViewCount with proper cache invalidation.",
+  "frontend/src/index.css": "Global styles with a clean minimal light theme using OKLCH color tokens, Inter/Plus Jakarta Sans fonts, and utility classes for the upload zone (dashed border, drag-over highlight, error state).",
+  "frontend/tailwind.config.js": "Tailwind config with minimal light palette tokens (brand-blue, surface-*, ink-*), Plus Jakarta Sans/Inter font families, updated border radii, and subtle shadow utilities.",
+  "frontend/src/hooks/useQueries.ts": "React Query hooks for image operations (useGetAllImages, useGetImage, useUploadImage with progress, useDeleteImage) and user profile management; the useUploadImage mutation now types its `bytes` parameter as `Uint8Array<ArrayBuffer>` to match the ExternalBlob.fromBytes signature.",
   "frontend/src/components/ReelCard.tsx": "Reusable reel card component with thumbnail, play overlay, title, uploader, tags, and view count; features amber glow hover effects and edge-lit styling.",
-  "frontend/src/components/Header.tsx": "Sticky navigation header with RevReel branding, desktop nav links, mobile hamburger menu, and amber-accented Submit CTA button.",
-  "frontend/src/components/Footer.tsx": "Site footer with brand info, navigation links, copyright year, and caffeine.ai attribution with UTM tracking.",
-  "frontend/src/pages/HomePage.tsx": "Homepage with full-width hero banner (generated image background), stats bar, featured reels grid with loading skeletons, and a CTA banner section.",
-  "frontend/src/pages/BrowsePage.tsx": "Browse/gallery page with search input, tag filter buttons, client-side filtering, and a responsive 4-column reel grid with empty/loading states.",
+  "frontend/src/components/Header.tsx": "Minimal header with ThumbnailUploader branding, logo icon, and Internet Identity login/logout button; no navigation links.",
+  "frontend/src/components/Footer.tsx": "Minimal footer with copyright year and caffeine.ai attribution link with UTM tracking.",
+  "frontend/src/pages/HomePage.tsx": "Homepage with hero banner, stats bar showing footage metrics, featured approved footage grid with loading skeletons, and a CTA banner section linking to submit page.",
+  "frontend/src/pages/BrowsePage.tsx": "Browse/gallery page with text search, dropdown filters for car type, shooting style, resolution, and frame rate, client-side filtering logic, and a responsive footage grid with loading skeletons.",
   "frontend/src/pages/UploadPage.tsx": "Reel submission form with fields for title, creator, description, video URL, thumbnail URL, and dynamic tag management; includes validation, loading state, and success confirmation.",
   "frontend/src/pages/ReelDetailPage.tsx": "Reel detail page with embedded iframe video player, full metadata display (title, uploader, tags, view count), and automatic view count increment on mount.",
-  "frontend/src/App.tsx": "Main app component setting up TanStack Router with Layout (Header/Footer/Outlet), routes for Home, Browse, Upload, and Reel Detail pages."
+  "frontend/src/App.tsx": "Simplified app with a single TanStack Router route at '/' rendering ThumbnailUploadPage inside a Layout with Header, Footer, and Toaster.",
+  "frontend/src/components/FootageCard.tsx": "Reusable footage card component displaying thumbnail, play overlay, title, uploader, car type/shooting style badges, resolution badge, frame rate, and view count with amber glow hover effects.",
+  "frontend/src/pages/FootageDetailPage.tsx": "Footage detail page with embedded video player (YouTube/Vimeo/direct), full metadata sidebar, download button, and automatic view count increment on load.",
+  "frontend/src/pages/SubmitFootagePage.tsx": "Public footage submission form with fields for title, description, video URL, thumbnail URL, submitter name, car type, shooting style, resolution, and frame rate; shows success confirmation after submission.",
+  "frontend/src/pages/AdminDashboardPage.tsx": "Protected admin dashboard with Internet Identity auth check, tabbed interface for uploading new footage (auto-approved) and managing existing approved footage with delete/approve/reject actions and confirmation dialogs. Fixed duplicate `carTypeLabel` and `shootingStyleLabel` declarations by removing the redundant copies at the bottom of the file.",
+  "frontend/src/pages/ThumbnailUploadPage.tsx": "Main thumbnail uploader page with drag-and-drop zone, file picker, PNG-only validation, live preview, upload progress bar, success state with stored image display, and delete/replace functionality; casts the ArrayBuffer result to `Uint8Array<ArrayBuffer>` before passing to the upload mutation.",
+  "frontend/index.html": "HTML entry point with updated title \"Thumbnail Uploader\"."
 }

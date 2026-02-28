@@ -10,32 +10,57 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
-export interface NewReel {
-  'title' : string,
-  'thumbnailUrl' : string,
-  'tags' : Array<string>,
-  'description' : string,
-  'uploader' : string,
-  'videoUrl' : string,
+export type ExternalBlob = Uint8Array;
+export type ImageId = string;
+export interface StoredImage {
+  'id' : ImageId,
+  'owner' : Principal,
+  'blob' : ExternalBlob,
+  'timestamp' : Timestamp,
 }
-export interface Reel {
-  'id' : bigint,
-  'title' : string,
-  'thumbnailUrl' : string,
-  'tags' : Array<string>,
-  'description' : string,
-  'viewCount' : bigint,
-  'uploader' : string,
-  'videoUrl' : string,
+export type Timestamp = bigint;
+export interface UserProfile { 'name' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
+export interface _CaffeineStorageCreateCertificateResult {
+  'method' : string,
+  'blob_hash' : string,
 }
-export interface ViewRange { 'end' : bigint, 'start' : bigint }
+export interface _CaffeineStorageRefillInformation {
+  'proposed_top_up_amount' : [] | [bigint],
+}
+export interface _CaffeineStorageRefillResult {
+  'success' : [] | [boolean],
+  'topped_up_amount' : [] | [bigint],
+}
 export interface _SERVICE {
-  'filterByTag' : ActorMethod<[string, ViewRange], Array<Reel>>,
-  'getAllReels' : ActorMethod<[], Array<Reel>>,
-  'getFeaturedReels' : ActorMethod<[ViewRange], Array<Reel>>,
-  'getReel' : ActorMethod<[bigint], Reel>,
-  'incrementViewCount' : ActorMethod<[bigint], boolean>,
-  'submitReel' : ActorMethod<[NewReel], bigint>,
+  '_caffeineStorageBlobIsLive' : ActorMethod<[Uint8Array], boolean>,
+  '_caffeineStorageBlobsToDelete' : ActorMethod<[], Array<Uint8Array>>,
+  '_caffeineStorageConfirmBlobDeletion' : ActorMethod<
+    [Array<Uint8Array>],
+    undefined
+  >,
+  '_caffeineStorageCreateCertificate' : ActorMethod<
+    [string],
+    _CaffeineStorageCreateCertificateResult
+  >,
+  '_caffeineStorageRefillCashier' : ActorMethod<
+    [[] | [_CaffeineStorageRefillInformation]],
+    _CaffeineStorageRefillResult
+  >,
+  '_caffeineStorageUpdateGatewayPrincipals' : ActorMethod<[], undefined>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'deleteImage' : ActorMethod<[ImageId], undefined>,
+  'getAllImages' : ActorMethod<[], Array<StoredImage>>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getImage' : ActorMethod<[ImageId], [] | [StoredImage]>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
+  'uploadImage' : ActorMethod<[ExternalBlob], ImageId>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

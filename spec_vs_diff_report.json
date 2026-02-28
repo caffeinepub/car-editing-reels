@@ -1,30 +1,68 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-28T15:34:27.236Z",
-  "summary": "The diff implements all six requirements comprehensively. The backend Motoko actor handles reel CRUD and view counting; the frontend includes homepage with hero banner, browse/gallery page, upload form, reel detail page with embedded video, and a consistent dark cinematic theme with amber accents. All acceptance criteria appear to be addressed by the implemented files.",
-  "missing_requirements": [],
-  "hallucinated_features": [],
-  "confidence": 0.92,
+  "generatedAt": "2026-02-28T17:25:11.284Z",
+  "summary": "The diff implements all three requirements reasonably well. REQ-1 backend actor exposes upload, retrieve, delete, and getAllImages functions. REQ-2 frontend provides drag-and-drop, file picker, PNG-only validation, live preview, upload button, success state, and delete/replace. REQ-3 applies a clean minimal theme with dashed upload zone, drag-over highlight, and consistent state treatments. One notable concern: the backend does not enforce 'only one thumbnail active at a time' at the actor level — it stores multiple images and relies on the frontend to delete before uploading. Additionally, there are hallucinated features (user profiles, access control/authorization, migration module) not requested in the build spec.",
+  "missing_requirements": [
+    {
+      "id": "REQ-1",
+      "requirement": "Only one thumbnail is active at a time (uploading a new one replaces the previous) — enforced at the backend actor level",
+      "reason": "The backend actor stores multiple images in a Map and does not automatically replace the previous thumbnail on upload. The single-active-thumbnail constraint is only enforced client-side in ThumbnailUploadPage.tsx by deleting before uploading, which means the backend itself does not guarantee this invariant.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/pages/ThumbnailUploadPage.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile management (getCallerUserProfile, getUserProfile, saveCallerUserProfile) added to backend actor",
+      "reason": "No user profile functionality was requested in the build spec. The backend should only expose upload, retrieve, and delete for a thumbnail.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/hooks/useQueries.ts"
+      ]
+    },
+    {
+      "description": "Access control and authorization system (AccessControl, MixinAuthorization) integrated into the backend",
+      "reason": "The build spec explicitly lists 'User authentication or access control for uploads' as a non-goal. The backend includes role-based permission checks on upload and delete operations.",
+      "evidence": [
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Migration module for transforming an old actor state schema",
+      "reason": "No migration from a previous actor schema was requested. The migration.mo file references complex old types unrelated to the thumbnail uploader spec.",
+      "evidence": [
+        "backend/migration.mo"
+      ]
+    },
+    {
+      "description": "Internet Identity login/logout button in the Header component",
+      "reason": "The build spec lists 'User authentication or access control for uploads' as a non-goal. Adding a login/logout flow via Internet Identity contradicts this.",
+      "evidence": [
+        "frontend/src/components/Header.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.82,
   "changed_files": [
-    "all_files_summary.json",
     "backend/main.mo",
+    "backend/migration.mo",
     "frontend-file-summaries.txt",
-    "frontend/index.css",
     "frontend/index.html",
     "frontend/src/App.tsx",
+    "frontend/src/components/FootageCard.tsx",
     "frontend/src/components/Footer.tsx",
     "frontend/src/components/Header.tsx",
-    "frontend/src/components/ReelCard.tsx",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useInternetIdentity.ts",
     "frontend/src/hooks/useQueries.ts",
     "frontend/src/index.css",
-    "frontend/src/main.tsx",
+    "frontend/src/pages/AdminDashboardPage.tsx",
     "frontend/src/pages/BrowsePage.tsx",
+    "frontend/src/pages/FootageDetailPage.tsx",
     "frontend/src/pages/HomePage.tsx",
-    "frontend/src/pages/ReelDetailPage.tsx",
-    "frontend/src/pages/UploadPage.tsx",
+    "frontend/src/pages/SubmitFootagePage.tsx",
+    "frontend/src/pages/ThumbnailUploadPage.tsx",
     "frontend/tailwind.config.js",
     "project_state.json"
   ]
